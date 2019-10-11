@@ -4,7 +4,7 @@
     "runtime-version": "19.08",
     "sdk": "org.freedesktop.Sdk",
     "sdk-extensions": [
-        "org.freedesktop.Sdk.Extension.openjdk8"
+        "org.freedesktop.Sdk.Extension.openjdk11"
     ],
     "command": "HMCL.sh",
     "modules": [
@@ -12,49 +12,21 @@
             "name": "openjdk",
             "buildsystem": "simple",
             "build-commands": [
-                "/usr/lib/sdk/openjdk8/install.sh"
-            ]
-        },
-        {
-            "name": "gradle",
-            "buildsystem": "simple",
-            "build-commands": [
-                "cp -r . /app/gradle"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://services.gradle.org/distributions/gradle-4.8-bin.zip",
-                    "sha256": "f3e29692a8faa94eb0b02ebf36fa263a642b3ae8694ef806c45c345b8683f1ba"
-                }
+                "/usr/lib/sdk/openjdk11/install.sh"
             ]
         },
         {
             "name": "openjfx",
             "buildsystem": "simple",
             "build-commands": [
-                "patch -Np1 -i java8-openjfx-flags.patch",
-                "patch -Np1 -i java8-openjfx-no-xlocale.patch",
-                "ping repo.maven.apache.org",
-                "http_proxy=socks5://127.0.0.1:1080 https_proxy=socks5://127.0.0.1:1080 JAVA_HOME=/app/jre /app/gradle/bin/gradle --refresh-dependencies"
+                "mkdir /app/openjfx",
+                "cp -r . /app/openjfx"
             ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://hg.openjdk.java.net/openjfx/8u/rt/archive/8u202-ga.zip",
-                    "sha256": "6bdceda40a7db8153d045bf505ba2e6e13def98e286c48fe70399f8407b10823"
-                },
-                {
-                    "type": "file",
-                    "path": "java8-openjfx-flags.patch"
-                },
-                {
-                    "type": "file",
-                    "path": "java8-openjfx-no-xlocale.patch"
-                },
-                {
-                    "type": "file",
-                    "path": "gradle.properties"
+                    "url": "https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_linux-x64_bin-sdk.zip",
+                    "sha256": "40ef06cd50ea535d45403d9c44e9cb405b631c547734b5b50a6cb7b222293f97"
                 }
             ]
         },
@@ -63,14 +35,17 @@
             "buildsystem": "simple",
             "build-commands": [
                 "install -D HMCL-3.2.136.jar /app/bin/HMCL.jar",
-                "echo \"#!/bin/sh\" > /app/bin/HMCL.sh",
-                "echo \"java -jar HMCL.jar\" >> /app/bin/HMCL.sh"
+                "install -D HMCL.sh /app/bin/HMCL.sh"
             ],
             "sources": [
                 {
                     "type": "file",
                     "url": "https://github.com/huanghongxun/HMCL/releases/download/v3.2.136/HMCL-3.2.136.jar",
                     "sha256": "328e66499e4d72424704edb4d8b2c1a2b6eb0a703b6fad66b24c851ba049ebbe"
+                },
+                {
+                    "type": "file",
+                    "path": "HMCL.sh"
                 }
             ]
         }
